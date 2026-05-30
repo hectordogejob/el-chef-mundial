@@ -343,3 +343,34 @@
     margin-left: 0;
   }
 }
+
+.preguntas-contador {
+  display: flex;
+  align-items: center;
+}
+
+.contador {
+  padding: 4px 10px;
+  background: #1a1610;
+  border: 1px solid #c9a84c44;
+  border-radius: 8px;
+  color: #c9a84c;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.contador.agotado {
+  border-color: #a0605044;
+  color: #a06050;
+  background: #2a1515;
+}
+
+.badge-premium {
+  padding: 4px 12px;
+  background: linear-gradient(135deg, #c9a84c22, #e6c65c22);
+  border: 1px solid #c9a84c;
+  border-radius: 8px;
+  color: #e6c65c;
+  font-size: 0.75rem;
+  font-weight: 600;
+}

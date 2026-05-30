@@ -139,6 +139,8 @@ class Usuario(Base):
     PasswordHash = Column(String(500), nullable=False)
     FechaRegistro = Column(DateTime, default=datetime.now)
     Activo = Column(Boolean, default=True)
+    EsPremium = Column(Boolean, default=False)
+    LimiteDiario = Column(Integer, default=3)
     conversaciones = relationship("Conversacion", back_populates="usuario")
     favoritos = relationship("Favorito", back_populates="usuario")
 
@@ -175,4 +177,49 @@ class Favorito(Base):
     platillo = relationship("Platillo")
     __table_args__ = (
         UniqueConstraint('UsuarioId', 'PlatilloId', name='UQ_Usuario_Platillo'),
+    )
+
+
+class Nivel(Base):
+    __tablename__ = "Niveles"
+    Id = Column(Integer, primary_key=True, autoincrement=True)
+    Nombre = Column(String(50), nullable=False)
+    XPMinimo = Column(Integer, nullable=False)
+    XPMaximo = Column(Integer, nullable=False)
+    Icono = Column(String(10), nullable=False)
+
+
+class PerfilGamer(Base):
+    __tablename__ = "PerfilGamer"
+    Id = Column(Integer, primary_key=True, autoincrement=True)
+    UsuarioId = Column(Integer, ForeignKey("Usuarios.Id"), nullable=False, unique=True)
+    NivelId = Column(Integer, ForeignKey("Niveles.Id"), nullable=False, default=1)
+    XP = Column(Integer, nullable=False, default=0)
+    Racha = Column(Integer, nullable=False, default=0)
+    MejorRacha = Column(Integer, nullable=False, default=0)
+    PlatillosCocinados = Column(Integer, nullable=False, default=0)
+    PreguntasAlChef = Column(Integer, nullable=False, default=0)
+    UltimaActividad = Column(DateTime, nullable=True)
+    nivel = relationship("Nivel")
+
+
+class Logro(Base):
+    __tablename__ = "Logros"
+    Id = Column(Integer, primary_key=True, autoincrement=True)
+    Nombre = Column(String(100), nullable=False)
+    Descripcion = Column(String(300), nullable=False)
+    Icono = Column(String(10), nullable=False)
+    Condicion = Column(String(50), nullable=False)
+    Valor = Column(Integer, nullable=False)
+
+
+class UsuarioLogro(Base):
+    __tablename__ = "UsuarioLogros"
+    Id = Column(Integer, primary_key=True, autoincrement=True)
+    UsuarioId = Column(Integer, ForeignKey("Usuarios.Id"), nullable=False)
+    LogroId = Column(Integer, ForeignKey("Logros.Id"), nullable=False)
+    FechaObtenido = Column(DateTime, default=datetime.now)
+    logro = relationship("Logro")
+    __table_args__ = (
+        UniqueConstraint('UsuarioId', 'LogroId', name='UQ_Usuario_Logro'),
     )

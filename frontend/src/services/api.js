@@ -33,6 +33,11 @@ export const preguntarAlChef = async (texto, conversacionId = null) => {
   return response.data;
 };
 
+export const obtenerPreguntasRestantes = async () => {
+  const response = await api.get('/chef/preguntas-restantes');
+  return response.data;
+};
+
 export const listarConversaciones = async () => {
   const response = await api.get('/conversaciones/');
   return response.data;

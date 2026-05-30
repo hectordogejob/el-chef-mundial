@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import ChatBubble from '../components/ChatBubble';
 import ChatInput from '../components/ChatInput';
-import { preguntarAlChef, listarConversaciones, obtenerHistorialConversacion, eliminarConversacion } from '../services/api';
+import { preguntarAlChef, listarConversaciones, obtenerHistorialConversacion, eliminarConversacion, obtenerPreguntasRestantes } from '../services/api';
 import './ChatPage.css';
 
 const sugerencias = [
@@ -25,6 +25,8 @@ function ChatPage({ usuario, onAbrirCatalogo, onLogout, preguntaInicial }) {
   const [sidebarAbierta, setSidebarAbierta] = useState(false);
   const [cargando, setCargando] = useState(false);
   const [preguntaProcesada, setPreguntaProcesada] = useState(null);
+  const [preguntasRestantes, setPreguntasRestantes] = useState(null);
+  const [esPremium, setEsPremium] = useState(false);
   const chatEndRef = useRef(null);
 
   useEffect(() => {
@@ -33,6 +35,7 @@ function ChatPage({ usuario, onAbrirCatalogo, onLogout, preguntaInicial }) {
 
   useEffect(() => {
     cargarConversaciones();
+    cargarPreguntasRestantes();
   }, []);
 
   useEffect(() => {
@@ -43,6 +46,16 @@ function ChatPage({ usuario, onAbrirCatalogo, onLogout, preguntaInicial }) {
       }, 100);
     }
   }, [preguntaInicial, preguntaProcesada]);
+
+  const cargarPreguntasRestantes = async () => {
+    try {
+      const data = await obtenerPreguntasRestantes();
+      setEsPremium(data.es_premium);
+      setPreguntasRestantes(data.restantes);
+    } catch (error) {
+      console.error('Error cargando preguntas restantes:', error);
+    }
+  };
 
   const cargarConversaciones = async () => {
     try {
@@ -95,20 +108,35 @@ function ChatPage({ usuario, onAbrirCatalogo, onLogout, preguntaInicial }) {
     try {
       const data = await preguntarAlChef(texto, conversacionId);
 
-      if (!conversacionId) {
-        setConversacionId(data.conversacion_id);
-        cargarConversaciones();
-      }
+      if (data.limite_alcanzado) {
+        setMensajes((prev) => [
+          ...prev,
+          {
+            texto: `⚠️ **Has alcanzado tu límite de ${data.limite} preguntas diarias.**\n\nHazte **Premium** para preguntas ilimitadas al Chef Vittorio. 👑\n\nMientras tanto, puedes explorar el **catálogo de recetas** que es completamente gratis.`,
+            esUsuario: false,
+          },
+        ]);
+        setPreguntasRestantes(0);
+      } else {
+        if (!conversacionId) {
+          setConversacionId(data.conversacion_id);
+          cargarConversaciones();
+        }
 
-      setMensajes((prev) => [
-        ...prev,
-        { texto: data.respuesta, esUsuario: false },
-      ]);
+        setMensajes((prev) => [
+          ...prev,
+          { texto: data.respuesta, esUsuario: false },
+        ]);
+
+        if (!data.es_premium) {
+          setPreguntasRestantes(data.preguntas_restantes);
+        }
+      }
     } catch (error) {
       setMensajes((prev) => [
         ...prev,
         {
-          texto: 'Disculpa, mi cocina tuvo un problema técnico. Verifica que el backend esté corriendo en localhost:8000.',
+          texto: 'Disculpa, mi cocina tuvo un problema técnico. Verifica que el backend esté corriendo.',
           esUsuario: false,
         },
       ]);
@@ -169,6 +197,16 @@ function ChatPage({ usuario, onAbrirCatalogo, onLogout, preguntaInicial }) {
             </div>
           </div>
           <div className="header-actions">
+            {!esPremium && preguntasRestantes !== null && (
+              <div className="preguntas-contador">
+                <span className={`contador ${preguntasRestantes === 0 ? 'agotado' : ''}`}>
+                  {preguntasRestantes}/3
+                </span>
+              </div>
+            )}
+            {esPremium && (
+              <span className="badge-premium">👑 Premium</span>
+            )}
             <button className="btn-catalogo" onClick={onAbrirCatalogo}>
               📖 Catálogo
             </button>
