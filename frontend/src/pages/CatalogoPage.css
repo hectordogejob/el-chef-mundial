@@ -1,0 +1,325 @@
+.catalogo-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 960px;
+  margin: 0 auto;
+  background: #12100c;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.catalogo-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 24px;
+  background: #0e0c08;
+  border-bottom: 1px solid #c9a84c33;
+}
+
+.btn-volver {
+  padding: 8px 14px;
+  background: #1a1610;
+  border: 1px solid #2a2418;
+  border-radius: 8px;
+  color: #c9a84c;
+  font-size: 0.82rem;
+  cursor: pointer;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.btn-volver:hover { background: #2a2418; }
+
+.catalogo-titulo h1 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #e6d8c8;
+  font-weight: 600;
+}
+
+.catalogo-titulo p {
+  margin: 2px 0 0 0;
+  font-size: 0.72rem;
+  color: #7a6a5a;
+}
+
+.buscador {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  background: #0e0c08;
+  border-bottom: 1px solid #1a1610;
+}
+
+.buscador-input {
+  flex: 1;
+  padding: 10px 16px;
+  background: #1a1610;
+  border: 1px solid #2a2418;
+  border-radius: 10px;
+  color: #d4c8b8;
+  font-size: 0.85rem;
+  font-family: 'Inter', system-ui, sans-serif;
+  outline: none;
+}
+
+.buscador-input::placeholder { color: #4a4030; }
+.buscador-input:focus { border-color: #c9a84c; }
+
+.buscador-clear {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: #2a2418;
+  color: #8a7a6a;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buscador-clear:hover { background: #3a3428; color: #c9a84c; }
+
+.filtros {
+  display: flex;
+  gap: 8px;
+  padding: 12px 24px;
+  overflow-x: auto;
+  background: #12100c;
+  border-bottom: 1px solid #1a1610;
+}
+
+.filtros-paises {
+  background: #0e0c08;
+  padding: 10px 24px;
+  border-bottom: 1px solid #c9a84c22;
+  animation: slideDown 0.25s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.filtro-btn {
+  padding: 8px 16px;
+  background: #1a1610;
+  border: 1px solid #2a2418;
+  border-radius: 20px;
+  color: #8a7a6a;
+  font-size: 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.filtro-btn:hover { border-color: #c9a84c; color: #c9a84c; }
+
+.filtro-btn.activo {
+  background: linear-gradient(135deg, #c9a84c, #e6c65c);
+  color: #1a1208;
+  border-color: #c9a84c;
+  font-weight: 600;
+}
+
+.filtro-pais-btn {
+  padding: 6px 14px;
+  background: #1a1610;
+  border: 1px solid #2a2418;
+  border-radius: 16px;
+  color: #8a7a6a;
+  font-size: 0.75rem;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.filtro-pais-btn:hover { border-color: #c9a84c; color: #c9a84c; }
+
+.filtro-pais-btn.activo {
+  background: #c9a84c33;
+  color: #c9a84c;
+  border-color: #c9a84c;
+  font-weight: 500;
+}
+
+.cargando { text-align: center; padding: 40px; color: #7a6a5a; }
+
+.sin-resultados {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  color: #5a5040;
+}
+
+.platillos-grid {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  align-content: start;
+}
+
+.platillo-card {
+  background: #1a1610;
+  border: 1px solid #2a2418;
+  border-radius: 14px;
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+}
+
+.platillo-card:hover { border-color: #c9a84c55; }
+
+.platillo-img-container {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  min-height: 160px;
+  max-height: 160px;
+  overflow: hidden;
+  background: #0e0c08;
+  border-radius: 14px 14px 0 0;
+}
+
+.platillo-img-container img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+.platillo-nivel {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 3px 8px;
+  background: #0e0c08cc;
+  border: 1px solid #c9a84c55;
+  border-radius: 10px;
+  color: #c9a84c;
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.btn-favorito {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: #0e0c08cc;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-favorito:hover { transform: scale(1.15); }
+
+.platillo-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, #0e0c08ee);
+  padding: 40px 12px 12px 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.platillo-overlay p {
+  margin: 0;
+  font-size: 0.72rem;
+  color: #e6d8c8;
+  line-height: 1.4;
+}
+
+.platillo-card:hover .platillo-overlay { opacity: 1; }
+
+.platillo-info {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.platillo-info h3 {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #e6d8c8;
+  font-weight: 600;
+}
+
+.platillo-cocina {
+  margin: 4px 0 0 0;
+  font-size: 0.75rem;
+  color: #c9a84c;
+}
+
+.platillo-meta {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.platillo-pais, .platillo-continente {
+  font-size: 0.65rem;
+  color: #6a5a4a;
+  padding: 2px 6px;
+  background: #12100c;
+  border-radius: 4px;
+}
+
+.platillo-botones {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+.btn-cocinar {
+  flex: 1;
+  padding: 9px;
+  background: #c9a84c18;
+  border: 1px solid #c9a84c44;
+  border-radius: 8px;
+  color: #c9a84c;
+  font-size: 0.75rem;
+  cursor: pointer;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.btn-cocinar:hover { background: #c9a84c30; }
+
+.btn-lista {
+  flex: 1;
+  padding: 9px;
+  background: #25d36618;
+  border: 1px solid #25d36644;
+  border-radius: 8px;
+  color: #25d366;
+  font-size: 0.75rem;
+  cursor: pointer;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.btn-lista:hover { background: #25d36630; }
+
+@media (max-width: 768px) {
+  .platillos-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .platillos-grid { grid-template-columns: 1fr; }
+  .buscador { padding: 8px 16px; }
+}
