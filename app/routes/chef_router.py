@@ -1,34 +1,28 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import func, Date
 from datetime import datetime, date
 from app.models.schemas import Pregunta
 from app.database.connection import get_db
-from app.database.models import Usuario, HistorialConversacion
+from app.database.models import Usuario, ContadorDiario
 from app.services import ia_service, conversaciones_service
 from app.services.auth_service import obtener_usuario_actual
 
 router = APIRouter(prefix="/chef", tags=["Chef Vittorio"])
 
 
-def contar_preguntas_hoy(db: Session, usuario_id: int) -> int:
+def obtener_contador(db: Session, usuario_id: int):
     hoy = date.today()
-    count = db.query(HistorialConversacion).filter(
-        HistorialConversacion.UsuarioId == usuario_id,
-        HistorialConversacion.Role == "user",
-        func.cast(HistorialConversacion.Fecha, db.bind.dialect.type_descriptor(type(hoy))) >= hoy
-    ).count()
-    return count
-
-
-def contar_preguntas_hoy_simple(db: Session, usuario_id: int) -> int:
-    hoy_inicio = datetime.combine(date.today(), datetime.min.time())
-    count = db.query(HistorialConversacion).filter(
-        HistorialConversacion.UsuarioId == usuario_id,
-        HistorialConversacion.Role == "user",
-        HistorialConversacion.Fecha >= hoy_inicio
-    ).count()
-    return count
+    contador = db.query(ContadorDiario).filter(
+        ContadorDiario.UsuarioId == usuario_id,
+        func.cast(ContadorDiario.Fecha, Date) == hoy
+    ).first()
+    if not contador:
+        contador = ContadorDiario(UsuarioId=usuario_id, Fecha=datetime.now(), PreguntasRealizadas=0)
+        db.add(contador)
+        db.commit()
+        db.refresh(contador)
+    return contador
 
 
 @router.post("/preguntar")
@@ -37,9 +31,9 @@ def preguntar_al_chef(
     db: Session = Depends(get_db),
     usuario: Usuario = Depends(obtener_usuario_actual)
 ):
-    # Verificar límite diario si no es premium
     if not usuario.EsPremium:
-        preguntas_hoy = contar_preguntas_hoy_simple(db, usuario.Id)
+        contador = obtener_contador(db, usuario.Id)
+        preguntas_hoy = contador.PreguntasRealizadas
         limite = usuario.LimiteDiario or 3
 
         if preguntas_hoy >= limite:
@@ -49,7 +43,7 @@ def preguntar_al_chef(
                 "limite_alcanzado": True,
                 "preguntas_hoy": preguntas_hoy,
                 "limite": limite,
-                "mensaje": f"Has alcanzado tu límite de {limite} preguntas diarias. Hazte Premium para preguntas ilimitadas. 👑"
+                "mensaje": f"Has alcanzado tu limite de {limite} preguntas diarias. Hazte Premium para preguntas ilimitadas."
             }
 
     conv_id = pregunta.conversacion_id
@@ -60,15 +54,20 @@ def preguntar_al_chef(
         conv_id = conv["id"]
 
     historial = conversaciones_service.obtener_historial_conversacion(db, conv_id)
-
     respuesta = ia_service.obtener_respuesta_chef(db, pregunta.texto, historial)
 
     conversaciones_service.guardar_mensaje(db, usuario.Id, conv_id, "user", pregunta.texto)
     conversaciones_service.guardar_mensaje(db, usuario.Id, conv_id, "assistant", respuesta)
 
-    # Calcular preguntas restantes
-    preguntas_hoy = contar_preguntas_hoy_simple(db, usuario.Id)
-    limite = usuario.LimiteDiario or 3
+    if not usuario.EsPremium:
+        contador = obtener_contador(db, usuario.Id)
+        contador.PreguntasRealizadas += 1
+        db.commit()
+        preguntas_hoy = contador.PreguntasRealizadas
+        limite = usuario.LimiteDiario or 3
+    else:
+        preguntas_hoy = 0
+        limite = 0
 
     return {
         "respuesta": respuesta,
@@ -87,7 +86,8 @@ def preguntas_restantes(
     if usuario.EsPremium:
         return {"es_premium": True, "restantes": -1, "limite": -1}
 
-    preguntas_hoy = contar_preguntas_hoy_simple(db, usuario.Id)
+    contador = obtener_contador(db, usuario.Id)
+    preguntas_hoy = contador.PreguntasRealizadas
     limite = usuario.LimiteDiario or 3
 
     return {

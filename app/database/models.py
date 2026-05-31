@@ -212,6 +212,12 @@ class Logro(Base):
     Condicion = Column(String(50), nullable=False)
     Valor = Column(Integer, nullable=False)
 
+class ContadorDiario(Base):
+    __tablename__ = "ContadorDiario"
+    Id = Column(Integer, primary_key=True, autoincrement=True)
+    UsuarioId = Column(Integer, ForeignKey("Usuarios.Id"), nullable=False)
+    Fecha = Column(DateTime, nullable=False)
+    PreguntasRealizadas = Column(Integer, default=0)
 
 class UsuarioLogro(Base):
     __tablename__ = "UsuarioLogros"
@@ -222,4 +228,7 @@ class UsuarioLogro(Base):
     logro = relationship("Logro")
     __table_args__ = (
         UniqueConstraint('UsuarioId', 'LogroId', name='UQ_Usuario_Logro'),
+        
     )
+
+    
