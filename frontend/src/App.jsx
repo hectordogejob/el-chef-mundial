@@ -5,12 +5,14 @@ import ChatPage from './pages/ChatPage';
 import CatalogoPage from './pages/CatalogoPage';
 import ListaComprasPage from './pages/ListaComprasPage';
 import { loginUsuario, registrarUsuario } from './services/api';
+import DetallePlatilloPage from './pages/DetallePlatilloPage';
 
 function App() {
   const [usuario, setUsuario] = useState(null);
   const [vista, setVista] = useState('login');
   const [preguntaDesdeCategoria, setPreguntaDesdeCategoria] = useState(null);
   const [listaCompras, setListaCompras] = useState(null);
+  const [detallePlatillo, setDetallePlatillo] = useState(null);
 
   useEffect(() => {
     const guardado = localStorage.getItem('chef_usuario');
@@ -57,7 +59,10 @@ function App() {
     setListaCompras({ id: platilloId, nombre: platilloNombre });
     setVista('lista');
   };
-
+const handleVerDetalle = (platilloId) => {
+    setDetallePlatillo(platilloId);
+    setVista('detalle');
+};
   if (!usuario) {
     return vista === 'login' ? (
       <LoginPage
@@ -71,7 +76,16 @@ function App() {
       />
     );
   }
-
+if (vista === 'detalle' && detallePlatillo) {
+    return (
+      <DetallePlatilloPage
+        platilloId={detallePlatillo}
+        onVolver={() => setVista('catalogo')}
+        onPreguntarChef={handlePreguntarPlatillo}
+        onVerIngredientes={handleVerListaCompras}
+      />
+    );
+}
   if (vista === 'lista' && listaCompras) {
     return (
       <ListaComprasPage
@@ -88,6 +102,7 @@ function App() {
         onVolverAlChat={() => setVista('chat')}
         onPreguntarPlatillo={handlePreguntarPlatillo}
         onVerListaCompras={handleVerListaCompras}
+        onVerDetalle={handleVerDetalle}
       />
     );
   }

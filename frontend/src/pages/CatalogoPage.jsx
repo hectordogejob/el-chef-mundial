@@ -4,7 +4,7 @@ import './CatalogoPage.css';
 
 const continentes = ['Todos', 'Europa', 'Asia', 'América', 'África', 'Oceanía', '❤️ Favoritos'];
 
-function CatalogoPage({ onVolverAlChat, onPreguntarPlatillo, onVerListaCompras }) {
+function CatalogoPage({ onVolverAlChat, onPreguntarPlatillo, onVerListaCompras, onVerDetalle }) {
   const [platillos, setPlatillos] = useState([]);
   const [favoritosIds, setFavoritosIds] = useState([]);
   const [filtroContinente, setFiltroContinente] = useState('Todos');
@@ -137,7 +137,7 @@ function CatalogoPage({ onVolverAlChat, onPreguntarPlatillo, onVerListaCompras }
           ) : (
             platillosFiltrados.map((p) => (
               <div key={p.id} className="platillo-card">
-                <div className="platillo-img-container">
+                <div className="platillo-img-container" onClick={() => onVerDetalle(p.id)} style={{cursor:'pointer'}}>
                   <img
                     src={`/images/platillos/${p.imagen}`}
                     alt={p.nombre}

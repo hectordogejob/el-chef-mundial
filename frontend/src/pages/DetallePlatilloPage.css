@@ -1,0 +1,91 @@
+.detalle-page {
+  height: 100vh;
+  max-width: 700px;
+  margin: 0 auto;
+  background: #12100c;
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow-y: auto;
+}
+
+.detalle-cargando { text-align: center; padding: 60px; color: #c9a84c; }
+
+.detalle-header {
+  padding: 14px 24px;
+  background: #0e0c08;
+  border-bottom: 1px solid #c9a84c33;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.btn-volver-detalle {
+  padding: 8px 14px;
+  background: #1a1610;
+  border: 1px solid #2a2418;
+  border-radius: 8px;
+  color: #c9a84c;
+  font-size: 0.82rem;
+  cursor: pointer;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.detalle-contenido { padding-bottom: 40px; }
+
+.detalle-imagen { position: relative; width: 100%; height: 280px; overflow: hidden; }
+.detalle-imagen img { width: 100%; height: 100%; object-fit: cover; }
+.detalle-nivel {
+  position: absolute; top: 14px; right: 14px;
+  padding: 5px 12px; background: #0e0c08cc;
+  border: 1px solid #c9a84c55; border-radius: 12px;
+  color: #c9a84c; font-size: 0.75rem; font-weight: 600;
+}
+
+.detalle-info-principal { padding: 20px 24px; }
+.detalle-info-principal h1 { margin: 0; font-size: 1.5rem; color: #e6d8c8; font-weight: 700; }
+.detalle-cocina { margin: 4px 0 0; font-size: 0.85rem; color: #c9a84c; }
+.detalle-meta { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; }
+.detalle-meta span { font-size: 0.78rem; color: #8a7a6a; }
+
+.detalle-seccion { padding: 0 24px; margin-top: 24px; }
+.detalle-seccion h2 { font-size: 1rem; color: #e6d8c8; margin: 0 0 10px; font-weight: 600; }
+.detalle-seccion p { font-size: 0.88rem; color: #a09080; line-height: 1.6; margin: 0; }
+
+.detalle-tip { background: #1a1610; margin: 24px 16px; padding: 16px 20px; border-radius: 12px; border: 1px solid #c9a84c33; }
+.detalle-tip p { color: #c9a84c; font-style: italic; }
+
+.detalle-ingredientes { display: flex; flex-direction: column; gap: 8px; }
+.detalle-ingrediente { display: flex; gap: 10px; align-items: baseline; padding: 8px 12px; background: #1a1610; border-radius: 8px; }
+.ing-cantidad { color: #c9a84c; font-size: 0.82rem; font-weight: 600; min-width: 100px; }
+.ing-nombre { color: #d4c8b8; font-size: 0.85rem; }
+.ing-notas { color: #6a5a4a; font-size: 0.75rem; font-style: italic; }
+
+.detalle-pasos { display: flex; flex-direction: column; gap: 16px; }
+.detalle-paso { display: flex; gap: 14px; }
+.paso-numero {
+  width: 32px; height: 32px; min-width: 32px;
+  background: linear-gradient(135deg, #c9a84c, #e6c65c);
+  border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-size: 0.82rem; font-weight: 700; color: #1a1208;
+}
+.paso-contenido { flex: 1; }
+.paso-contenido p { font-size: 0.85rem; color: #b8a898; line-height: 1.5; margin: 0; }
+.paso-tip { color: #c9a84c; font-size: 0.8rem; margin-top: 6px; font-style: italic; }
+.paso-tiempo { font-size: 0.72rem; color: #6a5a4a; }
+
+.detalle-acciones { display: flex; gap: 10px; padding: 24px; }
+.btn-chef {
+  flex: 1; padding: 14px; background: linear-gradient(135deg, #c9a84c, #e6c65c);
+  border: none; border-radius: 12px; color: #1a1208; font-size: 0.88rem;
+  font-weight: 600; cursor: pointer; font-family: 'Inter', system-ui, sans-serif;
+}
+.btn-ingredientes {
+  flex: 1; padding: 14px; background: #25d36618;
+  border: 1px solid #25d36644; border-radius: 12px; color: #25d366;
+  font-size: 0.88rem; cursor: pointer; font-family: 'Inter', system-ui, sans-serif;
+}
+
+@media (max-width: 480px) {
+  .detalle-imagen { height: 200px; }
+  .detalle-info-principal h1 { font-size: 1.2rem; }
+  .detalle-acciones { flex-direction: column; }
+}
