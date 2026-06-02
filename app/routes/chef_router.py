@@ -59,6 +59,9 @@ def preguntar_al_chef(
     conversaciones_service.guardar_mensaje(db, usuario.Id, conv_id, "user", pregunta.texto)
     conversaciones_service.guardar_mensaje(db, usuario.Id, conv_id, "assistant", respuesta)
 
+    from app.services import gamificacion_service
+    gamificacion_service.registrar_pregunta(db, usuario.Id)
+
     if not usuario.EsPremium:
         contador = obtener_contador(db, usuario.Id)
         contador.PreguntasRealizadas += 1

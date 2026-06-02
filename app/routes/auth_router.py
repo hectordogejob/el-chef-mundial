@@ -11,6 +11,8 @@ router = APIRouter(prefix="/auth", tags=["Autenticación"])
 def registro(datos: UsuarioRegistro, db: Session = Depends(get_db)):
     usuario = registrar_usuario(db, datos.nombre, datos.email, datos.password)
     token = crear_token(usuario.Id, usuario.Email)
+    from app.services import gamificacion_service
+    gamificacion_service.crear_perfil(db, usuario.Id)
     return TokenResponse(
         access_token=token,
         token_type="bearer",

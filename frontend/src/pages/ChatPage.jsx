@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import ChatBubble from '../components/ChatBubble';
 import ChatInput from '../components/ChatInput';
-import { preguntarAlChef, listarConversaciones, obtenerHistorialConversacion, eliminarConversacion, obtenerPreguntasRestantes } from '../services/api';
+import { preguntarAlChef, listarConversaciones, obtenerHistorialConversacion, eliminarConversacion, obtenerPreguntasRestantes, obtenerPerfil } from '../services/api';
 import './ChatPage.css';
 
 const sugerencias = [
@@ -27,25 +27,12 @@ function ChatPage({ usuario, onAbrirCatalogo, onLogout, preguntaInicial }) {
   const [preguntaProcesada, setPreguntaProcesada] = useState(null);
   const [preguntasRestantes, setPreguntasRestantes] = useState(null);
   const [esPremium, setEsPremium] = useState(false);
+  const [perfil, setPerfil] = useState(null);
   const chatEndRef = useRef(null);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [mensajes]);
-
-  useEffect(() => {
-    cargarConversaciones();
-    cargarPreguntasRestantes();
-  }, []);
-
-  useEffect(() => {
-    if (preguntaInicial && preguntaInicial !== preguntaProcesada) {
-      setPreguntaProcesada(preguntaInicial);
-      setTimeout(() => {
-        handleEnviar(preguntaInicial);
-      }, 100);
-    }
-  }, [preguntaInicial, preguntaProcesada]);
 
   const cargarPreguntasRestantes = async () => {
     try {
@@ -65,6 +52,30 @@ function ChatPage({ usuario, onAbrirCatalogo, onLogout, preguntaInicial }) {
       console.error('Error cargando conversaciones:', error);
     }
   };
+
+  const cargarPerfil = async () => {
+    try {
+      const data = await obtenerPerfil();
+      setPerfil(data);
+    } catch (e) {
+      console.error('Error cargando perfil:', e);
+    }
+  };
+
+  useEffect(() => {
+    cargarConversaciones();
+    cargarPreguntasRestantes();
+    cargarPerfil();
+  }, []);
+
+  useEffect(() => {
+    if (preguntaInicial && preguntaInicial !== preguntaProcesada) {
+      setPreguntaProcesada(preguntaInicial);
+      setTimeout(() => {
+        handleEnviar(preguntaInicial);
+      }, 100);
+    }
+  }, [preguntaInicial, preguntaProcesada]);
 
   const handleNuevaConversacion = () => {
     setConversacionId(null);
@@ -131,6 +142,8 @@ function ChatPage({ usuario, onAbrirCatalogo, onLogout, preguntaInicial }) {
         if (!data.es_premium) {
           setPreguntasRestantes(data.preguntas_restantes);
         }
+
+        cargarPerfil();
       }
     } catch (error) {
       setMensajes((prev) => [
@@ -206,6 +219,9 @@ function ChatPage({ usuario, onAbrirCatalogo, onLogout, preguntaInicial }) {
             )}
             {esPremium && (
               <span className="badge-premium">👑 Premium</span>
+            )}
+            {perfil && (
+              <span className="badge-nivel">{perfil.nivel_icono} {perfil.xp} XP</span>
             )}
             <button className="btn-catalogo" onClick={onAbrirCatalogo}>
               📖 Catálogo

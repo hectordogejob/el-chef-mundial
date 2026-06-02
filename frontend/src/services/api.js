@@ -93,4 +93,8 @@ export const quitarFavorito = async (platilloId) => {
   return response.data;
 };
 
+export const obtenerPerfil = async () => {
+  const response = await api.get('/perfil/');
+  return response.data;
+};
 export default api;

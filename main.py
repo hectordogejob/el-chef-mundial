@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
-from app.routes import platillos_router, chef_router, auth_router, favoritos_router, conversaciones_router
+from app.routes import platillos_router, chef_router, auth_router, favoritos_router, conversaciones_router, perfil_router
 
 app = FastAPI(
     title=settings.APP_TITLE,
@@ -20,6 +20,7 @@ app.include_router(platillos_router.router)
 app.include_router(chef_router.router)
 app.include_router(favoritos_router.router)
 app.include_router(conversaciones_router.router)
+app.include_router(perfil_router.router)
 
 
 @app.get("/", tags=["Health"])
