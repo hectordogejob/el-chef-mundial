@@ -7,6 +7,7 @@ import ListaComprasPage from './pages/ListaComprasPage';
 import { loginUsuario, registrarUsuario } from './services/api';
 import DetallePlatilloPage from './pages/DetallePlatilloPage';
 import LandingPage from './pages/LandingPage';
+import PerfilPage from './pages/PerfilPage';
 
 function App() {
   const [usuario, setUsuario] = useState(null);
@@ -88,7 +89,9 @@ if (vista === 'detalle' && detallePlatillo) {
       />
     );
   }
-
+if (vista === 'perfil') {
+    return <PerfilPage usuario={usuario} onVolver={() => setVista('chat')} />;
+  }
   if (vista === 'catalogo') {
     return (
       <CatalogoPage
@@ -106,6 +109,7 @@ if (vista === 'detalle' && detallePlatillo) {
       onAbrirCatalogo={() => setVista('catalogo')}
       onLogout={handleLogout}
       preguntaInicial={preguntaDesdeCategoria}
+      onAbrirPerfil={() => setVista('perfil')}
     />
   );
 }
