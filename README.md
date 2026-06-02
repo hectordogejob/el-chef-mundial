@@ -21,6 +21,4 @@ App de cocina internacional con inteligencia artificial. Aprende a cocinar plati
 - **IA:** Claude API (Anthropic)
 - **Autenticación:** JWT + bcrypt
 
-## 🚀 Cómo ejecutar
 
-### Backend
