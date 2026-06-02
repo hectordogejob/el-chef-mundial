@@ -6,10 +6,11 @@ import CatalogoPage from './pages/CatalogoPage';
 import ListaComprasPage from './pages/ListaComprasPage';
 import { loginUsuario, registrarUsuario } from './services/api';
 import DetallePlatilloPage from './pages/DetallePlatilloPage';
+import LandingPage from './pages/LandingPage';
 
 function App() {
   const [usuario, setUsuario] = useState(null);
-  const [vista, setVista] = useState('login');
+  const [vista, setVista] = useState('landing');
   const [preguntaDesdeCategoria, setPreguntaDesdeCategoria] = useState(null);
   const [listaCompras, setListaCompras] = useState(null);
   const [detallePlatillo, setDetallePlatillo] = useState(null);
@@ -64,17 +65,9 @@ const handleVerDetalle = (platilloId) => {
     setVista('detalle');
 };
   if (!usuario) {
-    return vista === 'login' ? (
-      <LoginPage
-        onLogin={handleLogin}
-        onIrARegistro={() => setVista('registro')}
-      />
-    ) : (
-      <RegistroPage
-        onRegistro={handleRegistro}
-        onIrALogin={() => setVista('login')}
-      />
-    );
+    if (vista === 'login') return <LoginPage onLogin={handleLogin} onIrARegistro={() => setVista('registro')} />;
+    if (vista === 'registro') return <RegistroPage onRegistro={handleRegistro} onIrALogin={() => setVista('login')} />;
+    return <LandingPage onIrALogin={() => setVista('login')} onIrARegistro={() => setVista('registro')} />;
   }
 if (vista === 'detalle' && detallePlatillo) {
     return (
