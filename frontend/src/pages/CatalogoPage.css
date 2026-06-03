@@ -323,3 +323,12 @@
   .platillos-grid { grid-template-columns: 1fr; }
   .buscador { padding: 8px 16px; }
 }
+
+.platillo-costo {
+  font-size: 0.7rem;
+  color: #25d366;
+  padding: 2px 8px;
+  background: #25d36615;
+  border-radius: 4px;
+  font-weight: 600;
+}

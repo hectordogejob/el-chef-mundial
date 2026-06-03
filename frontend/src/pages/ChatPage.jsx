@@ -10,7 +10,7 @@ const sugerencias = [
   { texto: 'Tengo pollo y verduras, qué cocino?', emoji: '🍗' },
   { texto: 'Quiero impresionar con un postre francés', emoji: '🍰' },
   { texto: 'Enséñame la técnica de flamear', emoji: '🔥' },
-  { texto: 'Quiero cocinar algo de Marruecos', emoji: '🇲🇦' },
+  { texto: 'Tengo $200 pesos, qué puedo cocinar?', emoji: '💰' },
 ];
 
 function ChatPage({ usuario, onAbrirCatalogo, onLogout, preguntaInicial, onAbrirPerfil }) {

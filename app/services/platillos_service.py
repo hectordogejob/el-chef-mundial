@@ -13,7 +13,8 @@ def listar_todos(db: Session) -> list[dict]:
             "continente": p.cocina.pais.continente.Nombre,
             "nivel": p.nivel.Nombre,
             "imagen": p.Imagen,
-            "descripcion": p.Descripcion
+            "descripcion": p.Descripcion,
+            "presupuesto": p.Presupuesto
         }
         for p in platillos
     ]

@@ -11,6 +11,7 @@ function CatalogoPage({ onVolverAlChat, onPreguntarPlatillo, onVerListaCompras, 
   const [filtroPais, setFiltroPais] = useState(null);
   const [busqueda, setBusqueda] = useState('');
   const [cargando, setCargando] = useState(true);
+  const [filtroPresupuesto, setFiltroPresupuesto] = useState(null);
 
   useEffect(() => {
     const cargar = async () => {
@@ -61,10 +62,10 @@ function CatalogoPage({ onVolverAlChat, onPreguntarPlatillo, onVerListaCompras, 
     ? platillos.filter((p) => p.pais === filtroPais)
     : platillos.filter((p) => p.continente === filtroContinente);
 
+
   const platillosFiltrados = busqueda
     ? platillosPorFiltro.filter((p) => p.nombre.toLowerCase().includes(busqueda.toLowerCase()))
     : platillosPorFiltro;
-
   return (
     <div className="catalogo-page">
       <header className="catalogo-header">
@@ -160,7 +161,7 @@ function CatalogoPage({ onVolverAlChat, onPreguntarPlatillo, onVerListaCompras, 
                   <div className="platillo-meta">
                     <span className="platillo-pais">{p.pais}</span>
                     <span className="platillo-continente">{p.continente}</span>
-                  </div>
+<span className="platillo-costo">{p.presupuesto === 1 ? '🟢 Económico' : p.presupuesto === 2 ? '🟡 Moderado' : '🔴 Gourmet'}</span>                  </div>
                   <div className="platillo-botones">
                     <button
                       className="btn-cocinar"

@@ -81,6 +81,7 @@ class Platillo(Base):
     TipChefVittorio = Column(String(500), nullable=True)
     Imagen = Column(String(200), nullable=True)
     Activo = Column(Boolean, default=True)
+    Presupuesto = Column(Integer, default=2)
     cocina = relationship("Cocina", back_populates="platillos")
     categoria = relationship("CategoriaPlatillo")
     nivel = relationship("NivelDificultad")

@@ -49,6 +49,13 @@ Reglas:
 - Si alguien pregunta por una técnica, explícala detalladamente con ejemplos
 - Adapta tu respuesta al nivel del usuario: si es principiante, sé más detallado
 - Si el usuario hace referencia a algo que dijo antes (como "eso que me dijiste", "la receta anterior", "qué más le puedo poner"), USA EL HISTORIAL para entender el contexto
+- Si el usuario te dice su presupuesto, recomienda platillos que pueda hacer con ese dinero
+- Adapta los precios al país del usuario según la moneda que mencione: pesos mexicanos (MXN), pesos colombianos (COP), pesos argentinos (ARS), soles peruanos (PEN), euros (EUR), dólares (USD)
+- Si dice "pesos" sin especificar país, pregúntale de qué país es para darte precios correctos
+- Si ya sabes su país por conversaciones anteriores, usa esos precios automáticamente
+- Siempre di el costo aproximado total del platillo en la moneda del usuario
+- Si el presupuesto es bajo, sugiere platillos económicos y da tips para ahorrar en ingredientes
+- Aclara que los precios son aproximados y pueden variar según la zona
 """
 
     # Construir mensajes con historial
