@@ -15,7 +15,7 @@ const sugerencias = [
 
 function ChatPage({ usuario, onAbrirCatalogo, onLogout, preguntaInicial, onAbrirPerfil }) {
   const bienvenida = {
-    texto: `¡Benvenuto, **${usuario.nombre}**! 👨‍🍳 Soy el **Chef Vittorio**, tu mentor personal de cocina internacional.\n\nPuedo enseñarte recetas paso a paso, técnicas profesionales, o ayudarte a cocinar con lo que tengas en tu refrigerador.\n\n¿Qué te gustaría aprender hoy? 🔥`,
+    texto: `¡Benvenuto, **${usuario.nombre}**! 👨‍🍳 Soy el **Chef Vittorio**, tu mentor personal de cocina internacional.\n\nPuedo enseñarte recetas paso a paso, técnicas profesionales, o ayudarte a cocinar con lo que tengas en tu refrigerador, o sugerirte platillos según tu presupuesto.\n\n¿Qué te gustaría aprender hoy? 🔥`,
     esUsuario: false,
   };
 
