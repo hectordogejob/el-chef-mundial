@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database.connection import get_db
 from app.models.schemas import UsuarioRegistro, UsuarioLogin, TokenResponse, UsuarioResponse
@@ -9,6 +9,8 @@ router = APIRouter(prefix="/auth", tags=["Autenticación"])
 
 @router.post("/registro", response_model=TokenResponse)
 def registro(datos: UsuarioRegistro, db: Session = Depends(get_db)):
+    if len(datos.password) < 6:
+        raise HTTPException(status_code=400, detail="La contraseña debe tener al menos 6 caracteres")
     usuario = registrar_usuario(db, datos.nombre, datos.email, datos.password)
     token = crear_token(usuario.Id, usuario.Email)
     from app.services import gamificacion_service

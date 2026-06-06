@@ -15,7 +15,7 @@ function LandingPage({ onIrALogin, onIrARegistro }) {
       </nav>
 
       <section className="hero">
-        <div className="hero-badge">👨‍🍳 Powered by AI</div>
+        <div className="hero-badge">👨‍🍳 Impulsado por Inteligencia Artificial</div>
         <h1>Tu Chef Personal de<br /><span className="hero-gold">Cocina Internacional</span></h1>
         <p className="hero-sub">Aprende a cocinar platillos de los 5 continentes con el Chef Vittorio, tu mentor personal con inteligencia artificial que se adapta a ti.</p>
         <div className="hero-btns">
