@@ -12,6 +12,9 @@ router = APIRouter(prefix="/auth", tags=["Autenticación"])
 def registro(datos: UsuarioRegistro, db: Session = Depends(get_db)):
     if len(datos.password) < 6:
         raise HTTPException(status_code=400, detail="La contraseña debe tener al menos 6 caracteres")
+    import re
+    if not re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', datos.email):
+        raise HTTPException(status_code=400, detail="El email no es válido")
     usuario = registrar_usuario(db, datos.nombre, datos.email, datos.password)
     token = crear_token(usuario.Id, usuario.Email)
     from app.services import gamificacion_service
