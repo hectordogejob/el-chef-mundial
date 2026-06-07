@@ -97,6 +97,15 @@ def preguntar_al_chef(
             "limite": 0,
             "mensaje": "Demasiadas peticiones. Espera 1 minuto."
         }
+    if len(pregunta.texto) > 1000:
+        return {
+            "respuesta": "Tu mensaje es muy largo. El límite es 1000 caracteres.",
+            "conversacion_id": pregunta.conversacion_id,
+            "limite_alcanzado": False,
+            "preguntas_restantes": 0,
+            "es_premium": usuario.EsPremium
+        }
+    pregunta.texto = pregunta.texto.replace("<", "").replace(">", "").replace("script", "").strip()
     if not usuario.EsPremium:
         contador = obtener_contador(db, usuario.Id)
         preguntas_hoy = contador.PreguntasRealizadas
@@ -118,6 +127,21 @@ def preguntar_al_chef(
         titulo = pregunta.texto[:50] + "..." if len(pregunta.texto) > 50 else pregunta.texto
         conv = conversaciones_service.crear_conversacion(db, usuario.Id, titulo)
         conv_id = conv["id"]
+
+    if conv_id:
+        from app.database.models import Conversacion
+        conv_existente = db.query(Conversacion).filter(
+            Conversacion.Id == conv_id,
+            Conversacion.UsuarioId == usuario.Id
+        ).first()
+        if not conv_existente:
+            return {
+                "respuesta": "Esta conversación no te pertenece.",
+                "conversacion_id": None,
+                "limite_alcanzado": False,
+                "preguntas_restantes": 0,
+                "es_premium": usuario.EsPremium
+            }
 
     preguardada = respuesta_preguardada(pregunta.texto)
     if preguardada:
