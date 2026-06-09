@@ -4,6 +4,9 @@ from app.database.connection import get_db
 from app.models.schemas import UsuarioRegistro, UsuarioLogin, TokenResponse, UsuarioResponse
 from app.services.auth_service import registrar_usuario, login_usuario, crear_token
 from app.services.rate_limiter import verificar_intentos_login, registrar_intento_fallido, limpiar_intentos
+from app.services.security_log import log_seguridad
+from app.services.auth_service import verify_password, crear_token
+from app.database.models import Usuario
 
 router = APIRouter(prefix="/auth", tags=["Autenticación"])
 
@@ -33,12 +36,14 @@ def registro(datos: UsuarioRegistro, db: Session = Depends(get_db)):
 @router.post("/login", response_model=TokenResponse)
 def login(datos: UsuarioLogin, db: Session = Depends(get_db)):
     if not verificar_intentos_login(datos.email):
+        log_seguridad("CUENTA_BLOQUEADA", f"Cuenta bloqueada: {datos.email}")
         raise HTTPException(status_code=429, detail="Demasiados intentos. Cuenta bloqueada por 15 minutos.")
     
-    try:
-        usuario = login_usuario(db, datos.email, datos.password)
-    except:
+    usuario = db.query(Usuario).filter(Usuario.Email == datos.email).first()
+    
+    if not usuario or not verify_password(datos.password, usuario.PasswordHash):
         registrar_intento_fallido(datos.email)
+        log_seguridad("LOGIN_FALLIDO", f"Intento fallido para {datos.email}")
         raise HTTPException(status_code=401, detail="Email o contraseña incorrectos")
     
     limpiar_intentos(datos.email)

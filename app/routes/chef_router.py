@@ -8,6 +8,7 @@ from app.database.models import Usuario, ContadorDiario
 from app.services import ia_service, conversaciones_service
 from app.services.auth_service import obtener_usuario_actual
 from app.services.rate_limiter import verificar_limite
+from app.services.security_log import log_seguridad
 
 router = APIRouter(prefix="/chef", tags=["Chef Vittorio"])
 
@@ -89,6 +90,7 @@ def preguntar_al_chef(
     usuario: Usuario = Depends(obtener_usuario_actual)
 ):
     if not verificar_limite(usuario.Id):
+        log_seguridad("RATE_LIMIT", f"Excedio 20 peticiones/min", usuario.Id)
         return {
             "respuesta": "Has hecho demasiadas peticiones. Espera un momento antes de continuar.",
             "conversacion_id": pregunta.conversacion_id,
@@ -98,6 +100,7 @@ def preguntar_al_chef(
             "mensaje": "Demasiadas peticiones. Espera 1 minuto."
         }
     if len(pregunta.texto) > 1000:
+        log_seguridad("MSG_LARGO", f"Mensaje de {len(pregunta.texto)} caracteres", usuario.Id)
         return {
             "respuesta": "Tu mensaje es muy largo. El límite es 1000 caracteres.",
             "conversacion_id": pregunta.conversacion_id,
@@ -135,6 +138,7 @@ def preguntar_al_chef(
             Conversacion.UsuarioId == usuario.Id
         ).first()
         if not conv_existente:
+            log_seguridad("CONV_AJENA", f"Intento acceder a conversacion {conv_id}", usuario.Id)
             return {
                 "respuesta": "Esta conversación no te pertenece.",
                 "conversacion_id": None,

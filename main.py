@@ -3,6 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
 from app.config import settings
 from app.routes import platillos_router, chef_router, auth_router, favoritos_router, conversaciones_router, perfil_router
+from app.services.security_log import log_seguridad
+from fastapi.responses import JSONResponse
+from fastapi import Request
 
 app = FastAPI(
     title=settings.APP_TITLE,
@@ -41,3 +44,8 @@ def inicio():
         "chef": "Chef Vittorio",
         "version": settings.APP_VERSION
     }
+
+@app.exception_handler(Exception)
+async def error_general(request: Request, exc: Exception):
+    log_seguridad("ERROR", str(exc))
+    return JSONResponse(status_code=500, content={"detail": "Error interno del servidor"})
