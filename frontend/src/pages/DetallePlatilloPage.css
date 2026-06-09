@@ -72,7 +72,14 @@
 .paso-tip { color: #c9a84c; font-size: 0.8rem; margin-top: 6px; font-style: italic; }
 .paso-tiempo { font-size: 0.72rem; color: #6a5a4a; }
 
-.detalle-acciones { display: flex; gap: 10px; padding: 24px; }
+.detalle-acciones {
+  display: flex;
+  gap: 10px;
+  padding: 24px;
+  width: 100%;
+  box-sizing: border-box;
+  clear: both;
+}
 .btn-chef {
   flex: 1; padding: 14px; background: linear-gradient(135deg, #c9a84c, #e6c65c);
   border: none; border-radius: 12px; color: #1a1208; font-size: 0.88rem;
@@ -88,4 +95,89 @@
   .detalle-imagen { height: 200px; }
   .detalle-info-principal h1 { font-size: 1.2rem; }
   .detalle-acciones { flex-direction: column; }
+}
+
+.nutricion-titulo { font-size: 0.85rem; font-weight: 600; color: #e6d8c8; }
+.nutricion-porcion { font-size: 0.68rem; color: #5a5040; background: #0e0c08; padding: 3px 10px; border-radius: 10px; }
+
+.nutricion-calorias {
+  text-align: center;
+  padding: 20px;
+  border-bottom: 1px solid #2a2418;
+}
+
+.nutricion-cal-numero { display: block; font-size: 2.5rem; font-weight: 500; color: #c9a84c; }
+.nutricion-cal-label { display: block; font-size: 0.75rem; color: #6a5a4a; margin-top: 2px; }
+.nutricion-clasificacion {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 0.72rem;
+  color: #25d366;
+  background: #25d36620;
+  padding: 4px 14px;
+  border-radius: 20px;
+}
+
+.nutricion-macros {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 16px 12px;
+  gap: 8px;
+  border-bottom: 1px solid #2a2418;
+}
+
+.macro-item { text-align: center; }
+.macro-label { display: block; font-size: 0.72rem; color: #e6d8c8; margin-top: 6px; }
+
+.macro-circulo {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.macro-circulo span {
+  font-size: 0.78rem;
+  font-weight: 500;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #12100c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.macro-proteina { background: conic-gradient(#25d366 0% var(--progreso), #2a2418 var(--progreso) 100%); }
+.macro-proteina span { color: #25d366; }
+.macro-carbos { background: conic-gradient(#c9a84c 0% var(--progreso), #2a2418 var(--progreso) 100%); }
+.macro-carbos span { color: #c9a84c; }
+.macro-grasas { background: conic-gradient(#e24b4a 0% var(--progreso), #2a2418 var(--progreso) 100%); }
+.macro-grasas span { color: #e24b4a; }
+
+.nutricion-extras {
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.extra-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+}
+
+.extra-item span:first-child { color: #8a7a6a; }
+.extra-item span:last-child { color: #e6d8c8; font-weight: 500; }
+
+.nutricion-footer {
+  padding: 10px 20px;
+  background: #1a1610;
+  font-size: 0.65rem;
+  color: #5a5040;
 }

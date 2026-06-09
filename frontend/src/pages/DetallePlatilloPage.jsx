@@ -99,8 +99,8 @@ function DetallePlatilloPage({ platilloId, onVolver, onPreguntarChef, onVerIngre
             </div>
           </div>
         )}
-
         <div className="detalle-acciones">
+            
           <button className="btn-chef" onClick={() => onPreguntarChef(`Enséñame a hacer ${platillo.nombre} paso a paso`)}>
             👨‍🍳 Pregúntale al Chef
           </button>

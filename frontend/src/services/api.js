@@ -97,4 +97,10 @@ export const obtenerPerfil = async () => {
   const response = await api.get('/perfil/');
   return response.data;
 };
+
+export const obtenerNutricion = async (platilloId) => {
+  const response = await api.get(`/platillos/${platilloId}/nutricion`);
+  return response.data;
+};
+
 export default api;
