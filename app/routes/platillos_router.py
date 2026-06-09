@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.database.connection import get_db
 from app.services import platillos_service
+from app.database.models import Usuario
+from app.services.auth_service import obtener_usuario_actual
 
 router = APIRouter(prefix="/platillos", tags=["Platillos"])
 
@@ -51,4 +53,25 @@ def obtener_ingredientes(platillo_id: int, db: Session = Depends(get_db)):
         "porciones": platillo["porciones"],
         "tiene_ingredientes": True,
         "ingredientes": platillo["ingredientes"]
+    }
+
+@router.get("/{platillo_id}/nutricion")
+def obtener_nutricion(
+    platillo_id: int,
+    db: Session = Depends(get_db),
+    usuario: Usuario = Depends(obtener_usuario_actual)
+):
+    from app.services.nutricion_service import calcular_nutricion_platillo
+    resultado = calcular_nutricion_platillo(db, platillo_id)
+    if not resultado:
+        return {"error": "No se pudo calcular la nutrición para este platillo"}
+    return {
+        "calorias": resultado.Calorias,
+        "proteina": resultado.Proteina,
+        "carbohidratos": resultado.Carbohidratos,
+        "grasas": resultado.Grasas,
+        "fibra": resultado.Fibra,
+        "sodio": resultado.Sodio,
+        "azucares": resultado.Azucares,
+        "clasificacion": resultado.Clasificacion
     }

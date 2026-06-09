@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, U
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from app.database.connection import Base
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, UniqueConstraint, Float
 
 
 class Continente(Base):
@@ -231,5 +232,18 @@ class UsuarioLogro(Base):
         UniqueConstraint('UsuarioId', 'LogroId', name='UQ_Usuario_Logro'),
         
     )
+
+class NutricionPlatillo(Base):
+    __tablename__ = "NutricionPlatillo"
+    Id = Column(Integer, primary_key=True, autoincrement=True)
+    PlatilloId = Column(Integer, ForeignKey("Platillos.Id"), nullable=False, unique=True)
+    Calorias = Column(Float, default=0)
+    Proteina = Column(Float, default=0)
+    Carbohidratos = Column(Float, default=0)
+    Grasas = Column(Float, default=0)
+    Fibra = Column(Float, default=0)
+    Sodio = Column(Float, default=0)
+    Azucares = Column(Float, default=0)
+    Clasificacion = Column(String(50), default="Balanceado")
 
     
