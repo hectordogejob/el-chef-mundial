@@ -35,7 +35,7 @@ function LandingPage({ onIrALogin, onIrARegistro }) {
           </div>
           <div className="feature-card">
             <span className="feature-icon">🌍</span>
-            <h3>34 Recetas de 6 Continentes</h3>
+            <h3>42 Recetas de 6 Continentes</h3>
             <p>Desde sushi japonés hasta mole poblano, pasando por curry tailandés y tagine marroquí. Cocina del mundo entero.</p>
           </div>
           <div className="feature-card">
