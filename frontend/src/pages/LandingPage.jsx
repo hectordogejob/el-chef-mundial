@@ -103,12 +103,11 @@ function LandingPage({ onIrALogin, onIrARegistro }) {
             <h3>Premium 👑</h3>
             <p className="plan-precio">$49 <span>MXN/mes</span></p>
             <ul>
-              <li>✅ Preguntas ILIMITADAS al Chef</li>
-              <li>✅ Todo lo del plan gratis</li>
-              <li>✅ Recetas exclusivas</li>
-              <li>✅ Sin límites</li>
-              <li>✅ Soporte prioritario</li>
-              <li>✅ Badge Premium 👑</li>
+             <li>✅ Preguntas ILIMITADAS al Chef</li>
+             <li>✅ Todo lo del plan gratis</li>
+             <li>✅ Sin anuncios</li>
+             <li>✅ Historial completo de conversaciones</li>
+             <li>✅ Chef recuerda tus preferencias</li>
             </ul>
             <button className="plan-btn-premium" onClick={onIrARegistro}>Hazte Premium</button>
           </div>
